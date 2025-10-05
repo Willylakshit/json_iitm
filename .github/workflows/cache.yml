@@ -1,0 +1,34 @@
+name: Cache Prime Example
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: prime-cache-baa9369
+        id: cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-baa9369
+
+      - name: Echo cache result
+        run: echo "Cache hit? ${{ steps.cache.outputs.cache-hit }}"
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt || true
